@@ -1,0 +1,39 @@
+@use './functions' as *;
+
+$heading-family: 'Outfit', 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande',
+  'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+
+$body-family: 'Outfit', 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode',
+  Geneva, Verdana, sans-serif;
+
+// Typography Scale
+$scale: (
+  'h1': rem(112),
+  'h2': rem(56),
+  'h3': rem(45),
+  'h4': rem(34),
+  'h5': rem(24),
+  'h6': rem(20),
+  'body': 1rem,
+  'body-sm': rem(12)
+);
+
+$line-height: (
+  'h1': 1,
+  'h2': 1.35,
+  'h3': rem(48),
+  'h4': rem(40),
+  'h5': rem(32),
+  'h6': 1,
+  'body': rem(24),
+  'body-sm': rem(24)
+);
+
+@mixin font($element) {
+  font-size: map-get($map: $scale, $key: $element);
+  line-height: map-get($map: $line-height, $key: $element);
+}
+
+@function size($el) {
+  @return map-get($map: $scale, $key: $el);
+}
