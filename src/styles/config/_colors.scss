@@ -1,0 +1,26 @@
+$primary-50: hsl(14, 67%, 95%);
+$primary-500: hsl(14, 53%, 46%);
+$primary-900: hsl(14, 53%, 10%);
+
+$white: hsl(14, 44%, 98%);
+$light-gray: hsl(14 44% 90%);
+$mid-gray: hsl(14, 24%, 70%);
+$dark-gray: hsl(14, 15%, 15%);
+$black: hsl(14, 65%, 2%);
+
+$green-500: #b8ec27;
+
+$blue-50: hsl(220, 67%, 95%);
+$blue-500: hsl(220, 53%, 46%);
+$blue-900: hsl(220, 53%, 46%);
+
+$red-50: hsl(350, 67%, 95%);
+$red-500: hsl(350, 53%, 46%);
+$red-900: hsl(350, 53%, 10%);
+
+@mixin frosted-glass($color) {
+  @supports (backdrop-filter: blur()) {
+    backdrop-filter: blur(25px);
+    background-color: transparentize($color: $color, $amount: 0.75);
+  }
+}

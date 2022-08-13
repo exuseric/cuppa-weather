@@ -1,0 +1,39 @@
+.spin {
+  animation: spin 1.5s linear infinite;
+}
+@keyframes spin {
+  to {
+    transform: rotateZ(180deg);
+  }
+}
+
+.slide-in {
+  animation: slide-in 0.35s cubic-bezier(0.6, -0.28, 0.735, 0.045) forwards;
+}
+.slide-out {
+  animation: slide-out 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+@keyframes slide-in {
+  from {
+    transform: translateY(-10px);
+    opacity: 0;
+    visibility: none;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+    visibility: none;
+  }
+}
+
+@keyframes slide-out {
+  50% {
+    transform: translateY(10px);
+  }
+  100% {
+    transform: translateY(10px);
+    opacity: 0;
+    visibily: none;
+  }
+}

@@ -1,0 +1,18 @@
+@use './functions' as *;
+
+$nav-height: rem(80);
+
+$spacing-xs: rem(4);
+$spacing-sm: rem(8);
+$spacing-md: rem(16);
+$spacing-lg: rem(56);
+$spacing-xl: rem(80);
+
+$section-margin: rem(120);
+
+$button-width: 18.75rem;
+$button-height: 3.75rem;
+
+$icon-button: rem(24);
+
+$transition: 0.5s cubic-bezier(0.19, 1, 0.22, 1);

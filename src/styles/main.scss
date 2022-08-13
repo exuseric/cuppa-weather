@@ -1,0 +1,59 @@
+@use 'config/index' as *;
+@forward './reset';
+@forward './buttons';
+
+body,
+html {
+  font-family: $body-family;
+  font-size: 100%;
+  line-height: 24px;
+  color: $dark-gray;
+  background-color: $white;
+}
+
+a {
+  color: inherit;
+  padding: $spacing-xs;
+  text-decoration-style: dotted;
+
+  outline-color: currentColor;
+  transition: all $transition;
+
+  &:hover,
+  &:focus {
+    color: $blue-500;
+  }
+}
+
+.active-link {
+  color: $primary-500;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+
+  clip: rect(0 0 0 0);
+  clip-path: inset(100%);
+
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+@mixin media-scroller($column-width) {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: $column-width;
+  gap: $spacing-sm;
+
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+
+  scroll-snap-type: inline mandatory;
+  scroll-padding-inline: $spacing-sm;
+
+  & > * {
+    scroll-snap-align: start;
+  }
+}
