@@ -1,12 +1,12 @@
 @use './functions' as *;
 
-$nav-height: rem(80);
+$nav-height: rem(64);
 
-$spacing-xs: rem(4);
-$spacing-sm: rem(8);
-$spacing-md: rem(16);
-$spacing-lg: rem(56);
-$spacing-xl: rem(80);
+$spacer-xs: rem(4);
+$spacer-sm: rem(8);
+$spacer-md: rem(16);
+$spacer-lg: rem(32);
+$spacer-xl: rem(80);
 
 $section-margin: rem(120);
 

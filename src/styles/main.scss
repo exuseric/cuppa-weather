@@ -13,7 +13,7 @@ html {
 
 a {
   color: inherit;
-  padding: $spacing-xs;
+  padding: $spacer-xs;
   text-decoration-style: dotted;
 
   outline-color: currentColor;
@@ -41,19 +41,55 @@ a {
   white-space: nowrap;
 }
 
-@mixin media-scroller($column-width) {
-  display: grid;
-  grid-auto-flow: column;
-  grid-auto-columns: $column-width;
-  gap: $spacing-sm;
+.card {
+  height: fit-content;
+}
+.card--rounded {
+  border-radius: rem(10);
+  overflow: hidden;
+  background-color: $light-gray;
+}
+.card--small {
+  width: 100%;
+  max-width: rem(350);
 
-  overflow-x: auto;
-  overscroll-behavior-inline: contain;
-
-  scroll-snap-type: inline mandatory;
-  scroll-padding-inline: $spacing-sm;
-
-  & > * {
-    scroll-snap-align: start;
+  &__wrapper {
+    margin: $spacer-lg $spacer-md;
   }
+
+  &__cover {
+    width: 100%;
+    // height: 100%;
+    overflow: hidden;
+
+    img {
+      object-position: center;
+      // width: 100%;
+      // height: 100%;
+    }
+
+    &--large {
+      height: rem(200);
+    }
+    &--small {
+      width: rem(72);
+      height: rem(72);
+    }
+  }
+
+  .title {
+    font-weight: 600;
+    text-transform: capitalize;
+
+    &--large {
+      @include font(h4);
+    }
+    &--small {
+      @include font(h6);
+    }
+  }
+}
+
+input {
+  outline-color: $blue-500;
 }
