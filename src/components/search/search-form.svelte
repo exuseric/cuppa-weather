@@ -1,218 +1,209 @@
 <script>
-  import axios from 'axios';
+  import { afterNavigate, goto } from '$app/navigation';
 
-  import LoaderIcon from '$components/icons/loader-icon.svelte';
-  import { loading, setLoading } from '$store/job-state';
-  import { city, getSearchResults, getSingleCity, isSearching, searchResults } from '$store/search';
-  import { getWeather } from '$store/weather';
-  import { flip } from 'svelte/animate';
-  import { fade } from 'svelte/transition';
+  import GeolocateButton from '$components/search/geolocate-button.svelte';
+  import Loader from '$icons/loader.svelte';
+  import { setLoading, toggleError } from '$store/job-state';
+  import { getSearchResults, isSearching, searchResults, setCurrentCity } from '$store/search.js';
+  import { getWeather, hasWeather } from '$store/weather';
 
-  // variables
-  let searchQuery = '';
   let filtered = [];
-  let dataFetched = false;
+  let query;
 
   $: {
-    if (dataFetched) {
+    if ($hasWeather) {
       goto('/weather');
-      afterNavigate(() => setLoading(!$loading));
+      afterNavigate(() => setLoading(false));
     }
-    // if ($searchResults.length > 0) {
-    //   filtered = [...$searchResults];
-    // }
   }
 
-  const handleSearch = async () => {
-    // if (searchQuery.length > 0 && searchQuery.length <= 2) {
-    //   // getSearchResults(searchQuery);
-    //   const { data } = await axios.get(`/api/spott/?q=${searchQuery}`);
-    //   filtered.push(data);
-    //   return;
-    // }
-    // if (searchQuery.length <= 0) {
-    //   filtered = [];
-    // }
-  };
+  function handleSubmit() {
+    const city = new FormData(this).get('search');
+  }
 
-  const handleFilter = () => {
-    // filtered = filtered.filter((query) =>
-    //   query.name.toLocaleLowerCase().includes(searchQuery.toLocaleLowerCase())
-    // );
-  };
+  function handleFilter() {
+    // const query = String(new FormData(this).get('search'));
+    // const query = this.value;
 
-  const handleSubmit = async () => {
-    await getSingleCity(searchQuery);
-    // await getWeather($city[0].coordinates);
-    console.log($city[0]);
-  };
+    if ($searchResults.length) {
+      let city_name = query.split(',')[0].toLowerCase();
 
-  function handleWeather() {
-    const { coords } = this.dataset;
-    getWeather(JSON.parse(coords));
+      if (query.includes(',')) {
+        const division = query.split(',')[1].replace(' ', '').toLowerCase();
+
+        filtered = $searchResults.filter(
+          (city) =>
+            String(city.name).toLowerCase().includes(city_name) &&
+            String(city.adminDivision1.name).toLowerCase().includes(division)
+        );
+
+        return;
+      }
+
+      filtered = $searchResults.filter((city) =>
+        String(city.name).toLowerCase().includes(city_name)
+      );
+    }
+  }
+
+  async function handleSearch(e) {
+    const search_value = String(new FormData(this).get('search'));
+
+    if (e.key !== 'Backspace' && search_value.length >= 3 && search_value.length <= 3) {
+      await getSearchResults(search_value);
+    }
+
+    // if ($searchResults.length) handleFilter(search_value);
+  }
+
+  function handleCoordinates() {
+    const { coordinates, city, timezone } = this.dataset;
+    query = city;
+    // filtered = [];
+    getWeather(JSON.parse(coordinates));
+    setCurrentCity({ city, timezone });
   }
 </script>
 
-<form on:submit|preventDefault={handleSubmit} on:keydown={handleSearch} class="form text-wrapper">
-  <div class="form__wrapper">
+<div class="search container--copy">
+  <form
+    class="search__form form"
+    on:submit|preventDefault={handleSubmit}
+    on:keyup|capture={handleSearch}
+  >
     <div class="form__group">
-      <label for="search" class="form__label sr-only"> Enter the name of your city: </label>
+      <label for="search" class="form__label sr-only">Enter the name of your city</label>
       <input
         class="form__input"
         type="search"
         name="search"
         id="search"
-        placeholder="Enter the name of your city."
-        required
-        aria-required="true"
         autocapitalize="word"
-        autocomplete="false"
-        bind:value={searchQuery}
+        autocomplete="home"
+        placeholder="Enter your city. ex: Nairobi, Kenya"
+        aria-label="Enter your city. ex: Nairobi, Kenya"
+        required
+        bind:value={query}
         on:input={handleFilter}
       />
     </div>
-    <button
-      class="form__button main-button main-button--search"
-      type="submit"
-      aria-label="search"
-      title="search"
-    >
-      {#if $isSearching}
-        <span class="icon-button spin"><LoaderIcon /></span>
-      {/if}
-      <span>Search</span>
-    </button>
-  </div>
-
-  <!-- DISPLAY ALL THE FILTERED CITIES -->
-
-  {#if filtered.length > 0}
-    <ul class="results" transition:fade={{ duration: 300 }}>
-      {#each filtered as query (query.id)}
-        <li
-          class="results__cell"
-          data-coords={JSON.stringify(query.coordinates)}
-          on:click={handleWeather}
-          transition:fade={{ duration: 300 }}
-          animate:flip={{ duration: 200 }}
-        >
-          <span class="city">
-            {query.name}.&nbsp;
+    <div class="form__group">
+      <button
+        type="submit"
+        class="button button--submit button--icon button--main"
+        aria-label="search"
+      >
+        <!-- <Search /> -->
+        {#if $isSearching}
+          <span class="icon">
+            <Loader />
           </span>
-          <span class="country"> {query.country.name}, {query.country.id}</span>
+        {/if}
+        <span class="s">Search</span>
+      </button>
+    </div>
+    <div class="form__group form__group--geolocate">
+      <GeolocateButton />
+    </div>
+  </form>
+  {#if filtered.length}
+    <ul class="search__list" aria-label="list of filtered cities">
+      {#each filtered as city}
+        <li>
+          <button
+            class="button button--city button--transparent"
+            data-coordinates={JSON.stringify(city.coordinates)}
+            data-city="{city.name}, {city.adminDivision1.name}"
+            data-timezone={city.timezoneId}
+            aria-label="city: {city.name}, {city.adminDivision1.name}"
+            on:click={handleCoordinates}
+          >
+            <span class="city">
+              {city.name}, {city.adminDivision1.name}
+            </span>
+            <span class="country">
+              &nbsp;{city.country.id}
+            </span>
+          </button>
         </li>
       {/each}
     </ul>
   {/if}
-</form>
+</div>
 
 <style lang="scss">
-  .form {
+  .search {
     position: relative;
     isolation: isolate;
+    z-index: 1;
 
-    color: $black;
-
-    width: 100%;
-    // max-width: rem(600);
-
-    @include screen(small) {
-      width: 50ch;
+    &__list {
+      position: absolute;
+      inset: 100% auto auto;
+      width: 100%;
     }
+  }
+  .form {
+    display: grid;
+    grid-template-columns: 2fr auto auto;
+    align-items: center;
+    gap: $spacer-xs;
 
-    &__wrapper {
-      display: grid;
-      grid-template-columns: 2fr auto;
-      justify-content: space-between;
-      gap: $spacing-xs;
-      width: inherit;
-      // padding: $spacing-sm;
-      // background-color: $light-gray;
-      border: 2px solid transparent;
-    }
+    padding: $spacer-xs;
 
-    &__label {
-      color: inherit;
-      font-weight: 600;
+    // background-color: $mid-gray;
+    border: 2px solid $dark-gray;
+    border-radius: rem(5);
+
+    &__group,
+    &__input {
+      width: 100%;
+      height: 100%;
     }
 
     &__input {
-      width: 100%;
-
-      padding: $spacing-sm;
-
-      color: inherit;
+      padding: $spacer-xs;
       background-color: transparent;
       border: 2px solid transparent;
-      border-bottom-color: $primary-500;
 
-      outline-color: $blue-500;
-
-      &::placeholder {
-        color: $primary-500;
+      &:focus {
+        background-color: $white;
       }
     }
   }
 
-  .main-button--search {
-    @include grid-flow-col;
-    place-content: center;
-    gap: $spacing-xs;
+  .search__list {
+    @include media-scroller-y($row-height: rem(40));
 
-    width: 100%;
-
-    // color: $dark-gray;
-
-    text-transform: capitalize;
-
-    border-radius: rem(5);
-
-    &:hover {
-      color: $primary-500;
-      background-color: $primary-50;
-    }
-
-    .icon-button {
-      padding: 0;
-    }
-  }
-
-  .results {
-    position: absolute;
-    top: 100%;
-
-    appearance: none;
     width: 100%;
     height: fit-content;
     max-height: rem(200);
-    overflow-y: scroll;
+
+    padding: $spacer-xs;
+    margin-top: $spacer-md;
+
+    list-style: none;
 
     background-color: $white;
 
-    margin-top: $spacing-sm;
-    padding: $spacing-md;
-
-    list-style-type: none;
-
-    border-radius: rem(10);
     border: 2px solid $mid-gray;
-    border-spacing: 0;
+    border-radius: rem(10);
 
-    box-shadow: 1px 1px 10px 2px transparentize($color: $mid-gray, $amount: 0.15);
-
-    transition: all 0.3s ease;
-  }
-
-  .results__cell {
-    font-weight: 600;
-
-    padding: $spacing-sm 0;
-
-    .city {
-      @include font(body);
+    &::-webkit-scrollbar {
+      display: none;
     }
-    .country {
-      color: $mid-gray;
+
+    li {
+      @include center;
+      justify-content: flex-start;
+    }
+
+    .button {
+      @include grid-flow-col;
+      align-items: center;
+      justify-content: space-between;
+      // gap: $spacer-md;
+      width: 100%;
     }
   }
 </style>

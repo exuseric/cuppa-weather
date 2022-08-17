@@ -1,14 +1,25 @@
 import axios from 'axios';
 import { writable } from 'svelte/store';
-import { toggleHasError } from './job-state';
+import { cities } from './data';
+import { toggleError } from './job-state';
 
+export const currentCity = writable('');
 export const city = writable({});
-export const searchResults = writable([]);
+export const searchResults = writable(cities);
 export const isSearching = writable(false);
 
 export const getSearchResults = async (query) => {
-  const { data } = await axios.get(`/api/spott/?q=${query}`);
-  searchResults.set(data);
+  isSearching.set(true);
+  await axios
+    .get(`/api/spott/?q=${query}`)
+    .then((res) => {
+      searchResults.set(res.data);
+      isSearching.set(false);
+    })
+    .catch(() => {
+      toggleError("Sorry we could'nt find you. Please check if you have an internet connection.");
+      isSearching.set(false);
+    });
 };
 
 export const getSingleCity = async (query) => {
@@ -21,9 +32,9 @@ export const getSingleCity = async (query) => {
       isSearching.set(false);
     })
     .catch(() => {
-      toggleHasError(
-        "Sorry we could'nt find you. Please check if you have an internet connectiion."
-      );
+      toggleError("Sorry we could'nt find you. Please check if you have an internet connectiion.");
       isSearching.set(false);
     });
 };
+
+export const setCurrentCity = (city) => currentCity.set(city);

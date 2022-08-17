@@ -8,7 +8,7 @@ export const hasError = writable(false);
 
 export const setLoading = (state) => loading.set(state);
 
-export const toggleHasError = (message) => {
+export const toggleError = (message) => {
   hasError.set(true);
   errorMessage.set(message);
 

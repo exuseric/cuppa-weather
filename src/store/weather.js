@@ -1,28 +1,25 @@
+import { weather as data } from '$store/data';
+import { setLoading, toggleError } from '$store/job-state';
 import { writable } from 'svelte/store';
-import { weather as data } from './data';
-import { geocode } from './geocode';
-import { setLoading, toggleHasError } from './job-state';
 
-export const weather = writable(data.current);
-export const daily = writable(data.daily);
+export const weather = writable({});
+export const daily = writable([]);
+export const hasWeather = writable(false);
 
 export const getWeather = async (coords) => {
   const api_endpoint = `/api/weather?lat=${coords.latitude}&lon=${coords.longitude}`;
 
   setLoading(true);
+
   await fetch(api_endpoint)
     .then((res) => {
-      const currentWeather = res.current;
-      const dailyWeather = res.daily;
-      weather.set(currentWeather);
-      daily.set(dailyWeather);
-      geocode({ ...res.lat, ...res.lon });
+      weather.set(res.current);
+      daily.set(res.daily);
+      setLoading(false);
     })
     .catch((err) => {
       console.log(err);
-      toggleHasError("We could'nt get your weather. Please try again.");
-    })
-    .finally(() => {
+      toggleError("We couldn't get your weather. Please try again.");
       setLoading(false);
     });
 };
