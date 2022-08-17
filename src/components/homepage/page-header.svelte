@@ -1,5 +1,4 @@
 <script>
-  import SearchBar from '$components/search/search-bar.svelte';
   import SearchForm from '$components/search/search-form.svelte';
 </script>
 

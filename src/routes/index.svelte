@@ -1,6 +1,5 @@
 <script>
   import AboutSection from '$components/homepage/about-section.svelte';
-  import LinksSection from '$components/homepage/links-section.svelte';
   import Header from '$components/homepage/page-header.svelte';
 </script>
 
