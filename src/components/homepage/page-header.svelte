@@ -1,14 +1,15 @@
 <script>
   import SearchBar from '$components/search/search-bar.svelte';
+  import SearchForm from '$components/search/search-form.svelte';
 </script>
 
 <header class="header">
   <div class="container">
     <div class="text-group">
-      <div class="heading text-wrapper">
+      <div class="heading container--copy">
         <h1>A cuppa that's right for your weather.</h1>
       </div>
-      <SearchBar />
+      <SearchForm />
     </div>
   </div>
 </header>
@@ -23,7 +24,7 @@
   }
 
   .heading {
-    margin-bottom: $spacing-lg;
+    margin-bottom: $spacer-lg;
 
     h1 {
       font-family: $heading-family;

@@ -27,12 +27,12 @@
 </script>
 
 <footer class="footer">
-  <div class="container container--grid">
+  <div class="container container--menu">
     <article class="footer__menu">
       <h4 class="footer__title">Menu</h4>
       <ul class="menu">
         {#each links as link}
-          <li class="text-wrapper">
+          <li class="container--copy">
             <a href={link.route} class="menu__link">
               {link.name}
             </a>
@@ -46,7 +46,7 @@
 
       <ul class="menu">
         {#each discover as item}
-          <li class="text-wrapper">
+          <li class="container--copy">
             <a href={item.link.route} target="_blank" rel="noopener noreferrer" class="menu__link">
               {item.link.name}
             </a>
@@ -59,7 +59,7 @@
 
       <ul class="menu">
         {#each resources as item}
-          <li class="text-wrapper">
+          <li class="container--copy">
             <a href={item.link.route} target="_blank" rel="noopener noreferrer" class="menu__link">
               {item.link.name}
             </a>
@@ -68,8 +68,8 @@
       </ul>
     </article>
   </div>
-  <div class="container">
-    <article class="footer__copyright">
+  <div class="container container--copyright">
+    <article class="copyright">
       <p>
         &copy; Copyright {new Date().getFullYear()} Eric Maina. All rights reserved
       </p>
@@ -79,25 +79,30 @@
 
 <style lang="scss">
   .footer {
-    padding: $spacing-lg 0;
+    padding: $spacer-lg 0;
     margin-top: $section-margin;
 
     &__title {
       @include font(h6);
-      padding: $spacing-xs;
-      margin-bottom: $spacing-sm;
+      padding: $spacer-xs;
+      margin-bottom: $spacer-sm;
     }
   }
-  .container--grid {
+
+  .container--menu {
     @include flex-wrap-row;
-    justify-content: space-between;
-    gap: $spacing-lg;
-    margin-bottom: $spacing-lg;
+    gap: $spacer-lg;
+    margin-bottom: $spacer-lg;
+  }
+
+  .container--copyright {
+    text-align: center;
+    margin-top: $section-margin;
   }
 
   .menu {
-    @include flex-wrap-row;
-    gap: $spacing-sm;
+    @include grid-flow-row;
+    gap: $spacer-sm;
 
     padding: 0;
     margin: 0;

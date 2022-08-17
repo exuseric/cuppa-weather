@@ -4,7 +4,7 @@
 </script>
 
 <div
-  class={`banner-wrapper text-wrapper ${
+  class={`banner-wrapper container--copy ${
     $hasError ? 'banner-wrapper--slide-in' : 'banner-wrapper--slide-out'
   }`}
   aria-hidden={!$hasError}
@@ -16,7 +16,7 @@
       </p>
     </article>
   </div>
-  <button class="close-btn" on:click={closeError}>
+  <button class="button button--close button--transparent button--icon" on:click={closeError}>
     <span>Close</span>
     <Close />
   </button>
@@ -25,7 +25,7 @@
 <style lang="scss">
   .banner-wrapper {
     position: fixed;
-    top: calc($nav-height + $spacing-md);
+    top: calc($nav-height + $spacer-md);
     right: 0;
     z-index: 99;
     // transform: translate(-50%, -50%);
@@ -34,18 +34,17 @@
     // max-width: rem(500);
     height: max-content;
 
-    padding: $spacing-lg $spacing-md;
+    padding: $spacer-lg $spacer-md;
     overflow: hidden;
 
     color: $red-500;
     background-color: $red-50;
-
-    border-radius: rem(10);
+    border: 2px solid $red-500;
 
     @include frosted-glass($red-50);
 
     @include screen(small) {
-      right: $spacing-md;
+      right: $spacer-md;
     }
 
     &--slide-in {
@@ -56,20 +55,12 @@
       pointer-events: none;
     }
   }
-  .close-btn {
-    @include grid-flow-col;
-    align-items: center;
-    justify-content: space-between;
-
+  .button--close {
     position: absolute;
     top: 0;
     right: 0;
-    padding: $spacing-xs;
 
     @include font(body-sm);
-
-    color: $red-500;
-    background-color: transparent;
   }
 
   .banner {
@@ -78,7 +69,7 @@
     z-index: 1;
   }
 
-  .text-wrapper {
+  .container--copy {
     @include flex-wrap-row;
     align-items: center;
 

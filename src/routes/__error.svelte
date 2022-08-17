@@ -19,57 +19,58 @@
   <title>{title} | Cuppa</title>
 </svelte:head>
 
-<section class="error-page section">
-  <header class="container ">
-    <div class="text-group">
-      <h1>{title}</h1>
-      <p>That wasn't supposed to happen.</p>
-      <a href="/">Let's go back home.</a>
-    </div>
-    <div class="sun">
+<section class="section section--error">
+  <article class="article container container--copy">
+    <header class="article__header section__header">
+      <div class="article__header--group">
+        <h1 class="section__title section__title--large">
+          {title}
+        </h1>
+        <p>This wasn't supposed to happen</p>
+      </div>
+      <div class="article__header--group">
+        <a href="/" class="button button--pill button--main button--outline" role="button"
+          >go back home</a
+        >
+      </div>
+    </header>
+
+    <div class="article__icon">
       <Sun />
     </div>
-  </header>
+  </article>
 </section>
 
 <style lang="scss">
-  .error-page {
-    @include center;
+  .article {
+    min-height: 60vh;
 
-    height: calc(100vh - $nav-height);
+    &__header {
+      margin-block: $spacer-lg;
+
+      &--group {
+        margin-block: $spacer-md;
+      }
+    }
   }
-  header {
+
+  .section__title {
+    @include font(h1);
+    color: $primary-500;
+  }
+
+  .article {
     @include flex-wrap-row;
     align-items: center;
     justify-content: space-between;
 
-    position: relative;
-    isolation: isolate;
-    overflow: hidden;
-
-    height: 100%;
-
-    // border-radius: 50%;
-
-    h1 {
-      position: relative;
-      z-index: 2;
-
-      // font-size: size(h1);
-      @include font(h1);
-      font-family: $heading-family;
-
-      color: $primary-500;
+    &__icon {
+      width: 100%;
+      max-width: rem(300);
+      height: rem(300);
+      svg {
+        @include font(h1);
+      }
     }
-
-    a {
-      font-weight: 600;
-      color: $primary-500;
-    }
-  }
-  .sun {
-    width: rem(300);
-    height: rem(300);
-    color: $primary-50;
   }
 </style>

@@ -1,35 +1,39 @@
 <section id="about" class="section section--about">
   <div class="container container--about">
-    <div class="text-group text-group--left">
-      <article class="text-wrapper content-wrapper">
-        <header class="container__header">
-          <h3 class="container__title">A little about cuppa</h3>
+    <div class="container__group container__group--left">
+      <article class="section__content container--copy content-wrapper">
+        <header class="section__header">
+          <h3 class="section__title section__title--large">A little about cuppa</h3>
         </header>
         <p>
           Cuppa is a web application that delivers your weather and a tea recipe that should feel
           just right for a cuppa.
         </p>
       </article>
-      <article class="works text-wrapper content-wrapper">
-        <div class="text-group">
-          <h4 class="works__title">How it works?</h4>
-          <p>
-            Cuppa works just like any weather application you are familiar with. You type in your
-            city or use your location and then you get the weather information
-          </p>
-        </div>
-        <div class="text-group">
-          <h4 class="works__title">What makes cuppa different?</h4>
-          <p>
-            With cuppa we dont stop at your daily temperature; we give you a tea recipe that is
-            curated to be just the right fit for you to brew yourself a cuppa.
-          </p>
-        </div>
+
+      <article class="works section__content container--copy content-wrapper">
+        <header class="section__header">
+          <h4 class="section__title section__title--small">How it works?</h4>
+        </header>
+        <p>
+          Cuppa works just like any weather application you are familiar with. You type in your city
+          or use your location and then you get the weather information
+        </p>
+      </article>
+
+      <article class="section__content container--copy">
+        <header class="section__header">
+          <h4 class="section__title section__title--small">What's different?</h4>
+        </header>
+        <p>
+          With cuppa we dont stop at your daily temperature; we give you a tea recipe that is
+          curated to be just the right fit for you to brew yourself a cuppa.
+        </p>
       </article>
     </div>
-    <div class="text-group text-group--right">
-      <article class="text-wrapper text-wrapper">
-        <p class="outro">
+    <div class="container__group container__group--right">
+      <article class="section__content container--copy">
+        <p class="outro section__title section__title--large">
           Discover a new recipe or an old one! Explore with spices and different types of milk;
         </p>
       </article>
@@ -38,38 +42,14 @@
 </section>
 
 <style lang="scss">
-  .section--about {
-    overflow-x: hidden;
-  }
-
-  .container {
-    &__title {
-      @include font(h4);
-      // color: ;
-    }
-  }
-
-  .works {
-    margin: $spacing-lg 0;
-
-    &__title {
-      @include font(h5);
-      color: $dark-gray;
-    }
-  }
-
-  .outro {
-    @include font(h3);
-  }
-
   .container--about {
     @include screen(small) {
       display: grid;
       grid-template-columns: repeat(2, 50%);
-      gap: $spacing-md;
+      gap: $spacer-md;
       align-items: center;
 
-      .text-group {
+      .container__group {
         &--left {
           grid-column: 1 / 2;
         }
@@ -81,33 +61,24 @@
       }
     }
   }
+  .section--about {
+    overflow-x: hidden;
+  }
 
-  .text-group {
+  .container__group {
     position: relative;
     isolation: isolate;
     z-index: 1;
 
-    &--right {
-      font-weight: 600;
-      font-family: $heading-family;
-      color: $primary-900;
-
-      margin-block: $spacing-xl;
-    }
-
-    &::before {
+    &--right::before {
       content: '';
       position: absolute;
-      z-index: -2;
-
-      background-color: $primary-500;
-    }
-
-    &--right::before {
       top: 50%;
       left: 10%;
       width: 100vw;
       height: rem(160);
+      z-index: -1;
+      background-color: $primary-50;
 
       @include screen(small) {
         top: 50%;

@@ -1,10 +1,11 @@
 <script>
   import Location from '$components/icons/location.svelte';
-  import { toggleHasError } from '$store/job-state';
+  import { toggleError } from '$store/job-state';
   import { getWeather } from '$store/weather';
-  import { fade } from 'svelte/transition';
 
   let isGeolocating = false;
+  let showDescription = false;
+  let pos = {};
 
   const geolocate = () => {
     isGeolocating = true;
@@ -20,8 +21,10 @@
       },
       (err) => {
         // update the message to show to the user
-        // toggleHasError("We couldn't find you. Please check if you have location enabled.");
-        toggleHasError(err.message);
+        toggleError(
+          "We couldn't find you. Please check if you have location and internet enabled."
+        );
+        // toggleError(err.message);
         isGeolocating = false;
         console.log(err);
       }
@@ -31,74 +34,73 @@
   const handleLocation = () => {
     if ('geolocation' in navigator) {
       geolocate();
-      // getWeather(data);
     } else {
-      toggleHasError('Please type in your location.');
+      toggleError('Please type in your location.');
     }
   };
 </script>
 
 <button
-  class={`geolocate-button ${isGeolocating ? 'locating-animation' : null}`}
+  type="button"
+  class="button button--round button--outline {isGeolocating ? 'button--loading' : ''}"
+  on:mouseenter={() => (showDescription = true)}
+  on:mouseleave={() => (showDescription = false)}
   on:click={handleLocation}
+  title="Use My Location"
 >
-  <span class="icon-button">
+  <span class="icon" aria-hidden="true">
     <Location />
   </span>
-  {#if !isGeolocating}
-    <span class="txt">Use My Location.</span>
-  {/if}
-  {#if isGeolocating}
-    <span class="txt">Looking For You.</span>
-  {/if}
+  <span
+    class="button__description {showDescription
+      ? 'button__description--active'
+      : 'button__description--inactive sr-only'}"
+  >
+    Use My Location.
+  </span>
 </button>
 
 <style lang="scss">
-  .geolocate-button {
-    @include grid-flow-col;
-    gap: $spacing-xs;
+  .button {
+    position: relative;
+    inset: 0 0 auto;
+    z-index: 1;
 
-    width: fit-content;
+    &__description {
+      position: absolute;
+      top: 180%;
+      left: 50%;
+      z-index: 2;
+      transform: translate(-50%, -50%);
 
-    padding: $spacing-xs;
-    color: $dark-gray;
-    background-color: transparent;
+      width: rem(150);
+      padding: $spacer-xs;
 
-    &:hover {
-      color: $primary-500;
+      @include center;
+
+      color: $dark-gray;
+      background-color: $light-gray;
+      border: 2px solid currentColor;
+
+      border-radius: rem(5);
     }
-    &:focus {
-      color: $blue-50;
-      background-color: $blue-500;
-
-      &:hover {
-        color: $primary-500;
-        background-color: $primary-50;
+    &--loading {
+      .icon {
+        animation: bob 1s linear infinite;
+        transform-origin: bottom;
       }
-    }
-  }
-
-  .icon-button {
-    padding: 0;
-  }
-
-  .locating-animation {
-    color: $primary-500;
-    .icon-button {
-      animation: bob 1s linear infinite;
-      transform-origin: bottom;
     }
   }
 
   @keyframes bob {
     0% {
-      transform: translateY(5%) rotateZ(10deg);
+      transform: translateY(5%) rotateY(90deg);
     }
     50% {
-      transform: translateY(0%) rotateZ(-10deg);
+      transform: translateY(0%) rotateY(-90deg);
     }
     100% {
-      transform: translateY(5%) rotateZ(10deg);
+      transform: translateY(5%) rotateY(90deg);
     }
   }
 </style>

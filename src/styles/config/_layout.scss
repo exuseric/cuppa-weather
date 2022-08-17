@@ -1,35 +1,55 @@
 @use 'media' as *;
 @use 'functions' as *;
 @use 'metrics' as *;
+@use 'fonts' as *;
 
 .section {
   margin: $section-margin auto;
-  padding-block: $spacing-lg;
+  padding-block: $spacer-lg;
   min-height: 100vh;
-}
-.text-wrapper {
-  max-width: 50ch;
-}
-.heading-wrapper {
-  max-width: 65ch;
-}
-.content-wrapper {
-  margin: $spacing-md 0;
 
-  & > * {
-    margin: $spacing-md 0;
+  &__header {
+    margin: $spacer-sm 0;
+  }
+  &__title {
+    font-weight: 600;
+    font-family: $heading-family;
+
+    &--large {
+      @include font(h4);
+    }
+    &--small {
+      @include font(h5);
+    }
+  }
+
+  &__content {
+    margin: $spacer-lg 0;
   }
 }
+
+.container--copy {
+  max-width: 50ch;
+}
+
+// .content-wrapper {
+//   margin: $spacer-md 0;
+
+//   & > * {
+//     margin: $spacer-md 0;
+//   }
+// }
 
 .container {
   width: 100%;
   max-width: rem(750);
 
   margin: auto;
-  padding-inline: rem(16);
+  padding-inline: $spacer-md;
 
   @include screen(small) {
-    padding-inline: rem(32);
+    max-width: rem(950);
+    padding-inline: $spacer-lg;
   }
 
   @include screen('medium') {
@@ -72,4 +92,41 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+@mixin media-scroller($column-width) {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: $column-width;
+  gap: $spacer-md;
+
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+
+  scroll-snap-type: inline mandatory;
+  scroll-padding-inline: $spacer-sm;
+
+  & > * {
+    scroll-snap-align: start;
+  }
+}
+
+@mixin media-scroller-y($row-height) {
+  display: grid;
+  grid-auto-flow: row;
+  grid-auto-rows: $row-height;
+  gap: $spacer-md;
+
+  overflow-y: auto;
+  // overscroll-behavior-inline: contain;
+  overscroll-behavior-block: contain;
+
+  // scroll-snap-type: inline mandatory;
+  scroll-snap-type: block mandatory;
+  // scroll-padding-inline: $spacer-sm;
+  scroll-padding-block: $spacer-sm;
+
+  & > * {
+    scroll-snap-align: start;
+  }
 }
