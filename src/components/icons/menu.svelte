@@ -1,11 +1,13 @@
 <svg
   xmlns="http://www.w3.org/2000/svg"
   viewBox="0 0 64 64"
-  stroke-width="3"
+  stroke-width="5"
+  stroke-linecap="round"
+  stroke-linejoin="round"
   stroke="currentColor"
   fill="none"
-  width="1rem"
-  height="1rem"
+  width="24"
+  height="24"
   aria-hidden="true"
   ><line x1="7.68" y1="32" x2="56.32" y2="32" /><line
     x1="7.68"

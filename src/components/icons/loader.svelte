@@ -1,7 +1,7 @@
 <svg
   xmlns="http://www.w3.org/2000/svg"
-  width="1.4em"
-  height="1.4em"
+  width="24"
+  height="24"
   preserveAspectRatio="xMidYMid meet"
   role="img"
   aria-hidden="true"

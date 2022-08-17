@@ -4,8 +4,8 @@
   stroke-width="8"
   stroke="currentColor"
   fill="none"
-  width="1rem"
-  height="1rem"
+  width="24"
+  height="24"
   aria-hidden="true"
   ><circle cx="27.31" cy="25.74" r="18.1" /><line x1="39.58" y1="39.04" x2="56.14" y2="57" /></svg
 >

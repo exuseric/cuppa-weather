@@ -1,6 +1,6 @@
 <svg
-  width="1.5em"
-  height="1.5em"
+  width="100%"
+  height="100%"
   preserveAspectRatio="xMidYMid meet"
   role="img"
   aria-hidden="true"
