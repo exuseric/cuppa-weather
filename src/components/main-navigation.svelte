@@ -26,7 +26,7 @@
 <header class="nav-bar">
   <div class="container container--grid">
     <a href="/" class="logo">
-      <img src="/logo/main.webp" alt="logo" class="logo__img" />
+      <img src="/logo/logo.png" alt="logo" class="logo__img" />
       <span class="logo__txt">Cuppa</span>
     </a>
 
@@ -62,7 +62,7 @@
   .logo {
     @include grid-flow-col;
     justify-content: start;
-    gap: $spacing-sm;
+    gap: $spacer-sm;
 
     text-decoration: none;
     width: rem(150);
@@ -100,7 +100,7 @@
   }
 
   .menu {
-    gap: $spacing-md;
+    gap: $spacer-md;
     padding: 0;
     margin: 0;
   }
